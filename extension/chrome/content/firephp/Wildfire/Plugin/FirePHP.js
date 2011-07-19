@@ -77,13 +77,23 @@ Wildfire.Plugin.FirePHP = function() {
     
     var messages = new Array();
     
+    var message_tmp;
+
     for( var index in this.messages ) {
       if(this.messages[index][1]==StructureURI) {
-        messages.push(this.messages[index][2]);
+        message_tmp = this.messages[index][2];
+        if(this.channel.getOption('gzip')) {
+           message_tmp = this.__decompressGzip(message_tmp);
+        }
+        messages.push(message_tmp);
       }
     }
 
     return messages;
+  };
+  
+  this.__decompressGzip = function (s) { // Decompress with JXG library
+      return(JXG.decompress(s));
   };
   
 }
